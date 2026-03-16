@@ -1,48 +1,20 @@
-from random import randint
+class Postava:
+    def __init__(self, hp, utok):
+        self.hp = hp
+        self.utok = utok
 
-def vypis_staty_hraca():
-    print(f"Hrac {meno} ma hp: {hpHraca} a jeho utok je {utokHraca}.")
+    def is_alive(self):
+        return self.hp > 0
 
-def vytvor_nepriatela():
-    hp = randint(10,20)
-    utok = randint(2,5)
-    return hp, utok
+    def minus_hp(self, utok_protihraca):
+        self.hp -= utok_protihraca
 
-def vypis_staty_nepriatela():
-    print(f"Nepriatel cislo {nepriatelCislo} ma hp: {hpNepriatela} a jeho utok je {utokNepriatela}.")
+p = Postava(10, 7)
+print(p.hp)
+print(p.utok)
 
-meno = input("Zadaj meno: ")
+p.minus_hp(2)
+print(p.hp)
 
-if meno[0] in "qwertyuiopasdfghjklzxcvbnm":
-    print("Si normalny ? Prve pismenko mena je od kedy male ?!")
-    meno = meno[0].upper() + meno[1:]
-    print(f"Tvoje meno od teraz je: {meno}")
+print(p.is_alive())
 
-##print("Ahoj", meno, "vitaj v hre")
-print(f"Ahoj {meno} vitaj v hre")
-
-
-hpHraca = randint(50,100)
-utokHraca = randint(5,15)
-
-hpNepriatela, utokNepriatela = vytvor_nepriatela()
-nepriatelCislo = 1
-
-vypis_staty_hraca()
-vypis_staty_nepriatela()
-
-while hpHraca > 0:
-    if hpNepriatela <= 0:
-        nepriatelCislo += 1
-        hpNepriatela, utokNepriatela = vytvor_nepriatela()
-    print(f"Hrac {meno} utoci")
-    hpNepriatela -= utokHraca
-    if hpNepriatela <= 0:
-        print(f"Nepriatel cislo {nepriatelCislo} zomrel")
-        continue
-    print(f"Nepriatel cislo {nepriatelCislo} utoci")
-    hpHraca -= utokNepriatela
-    vypis_staty_hraca()
-    print()
-
-print(f"Prehral si. Porazil si {nepriatelCislo} nepriatelov")
