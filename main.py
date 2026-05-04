@@ -1,20 +1,41 @@
-class Postava:
-    def __init__(self, hp, utok):
-        self.hp = hp
-        self.utok = utok
+import tkinter as tk
 
-    def is_alive(self):
-        return self.hp > 0
+WIDTH = 400
+HEIGHT = 400
+SIZE = 20
 
-    def minus_hp(self, utok_protihraca):
-        self.hp -= utok_protihraca
+root = tk.Tk()
+root.title("Had")
 
-p = Postava(10, 7)
-print(p.hp)
-print(p.utok)
+canvas = tk.Canvas(root, width=WIDTH,
+                   height=HEIGHT, bg="lightblue")
+canvas.pack()
 
-p.minus_hp(2)
-print(p.hp)
+had = [
+    (100,100),
+    (80,100),
+    (60,100)
+    ]
 
-print(p.is_alive())
+def draw():
+    canvas.delete("had")
+    for x,y in had:
+        canvas.create_rectangle(x,y, x+SIZE, y+SIZE,
+                            fill="red", tag="had")
 
+def move():
+    hlava_x, hlava_y = had[0]
+    nova_hlava = (hlava_x + SIZE, hlava_y)
+
+    had.insert(0, nova_hlava)
+    had.pop()
+
+def game_loop():
+    move()
+    draw()
+
+    canvas.after(200, game_loop)
+
+game_loop()
+
+root.mainloop()
