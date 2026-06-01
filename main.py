@@ -41,7 +41,7 @@ def draw():
         canvas.create_rectangle(x, y, x+SIZE, y+SIZE, fill="red", tag="had")
 
 def move():
-    global jablko_x, jablko_y
+    global jablko_x, jablko_y, my_run
     
     hlava_x, hlava_y = had[0]
     if smer == "Vpravo":
@@ -54,6 +54,12 @@ def move():
         nova_hlava = (hlava_x, hlava_y + SIZE)
         
     had.insert(0, nova_hlava)
+
+    while nova_hlava in had[1:]:
+        had.pop()
+
+    if nova_hlava[0] > WIDTH:
+        root.after_cancel(my_run)
     
     # KONTROLA: Zjedol had jablko?
     if nova_hlava == (jablko_x, jablko_y):
@@ -64,19 +70,22 @@ def move():
 def zmen_smer(event):
     global smer
 
-    if event.keysym == "Up":
+    if event.keysym == "Up" and smer != "Dole":
         smer = "Hore"
-    elif event.keysym == "Down":
+    elif event.keysym == "Down" and smer != "Hore":
         smer = "Dole"
-    elif event.keysym == "Right":
+    elif event.keysym == "Right" and smer != "Vlavo":
         smer = "Vpravo"
-    elif event.keysym == "Left":
+    elif event.keysym == "Left" and smer != "Vpravo":
         smer = "Vlavo"
-        
+
+my_run = None
+   
 def game_loop():
+    global my_run
     move()
     draw()
-    canvas.after(200, game_loop)
+    my_run = canvas.after(200, game_loop)
 
 root.bind("<Key>", zmen_smer)
 
