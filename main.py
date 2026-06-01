@@ -80,6 +80,11 @@ def zmen_smer(event):
         smer = "Vlavo"
 
 my_run = None
+
+def game_over():
+    hlava = had[0]
+    
+    
    
 def game_loop():
     global my_run
